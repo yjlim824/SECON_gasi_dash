@@ -277,11 +277,8 @@ def index(request):
     # 서버값 불러오기- 회사 데이터 쌓이는 것
     conn = pymysql.connect(host='172.30.1.220', user='gasi', password='gasi1234!', database='TSG_DB', port=3306,
                            charset='utf8')
-    cur = conn.cursor()
-    sql = 'SELECT * FROM TSG_DB.TSG_TE_DEVICE_SCAN_DATA_WIFI WHERE MAC = 88205820257752 ORDER BY `TIME` DESC limit 30'
-    cur.execute(sql)
-    row = cur.fetchmany(10)
-    print(row)
+    sql = 'SELECT * FROM TSG_DB.TSG_TE_DEVICE_SCAN_DATA_WIFI WHERE MAC = 88205820257752 ORDER BY `TIME` DESC '
+    df = pd.read_sql(sql, conn)
 
 
 

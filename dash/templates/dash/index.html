@@ -24,6 +24,20 @@
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
 
+    <!-- bxslider -->
+    <link rel="stylesheet" href="{% static 'css/jquery.bxslider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.bxslider.min.css' %}">
+
+        <!-- bxslider -->
+    <script src="{% static 'js/jquery.bxslider.min.js' %}"></script>
+    <script src="{% static 'js/jquery.bxslider.js' %}"></script>
+
+    <script>
+        $(document).ready(fuction(){
+            $('.bxslider').bxSlider();
+        });
+    </script>
+
     <!--배경색 설정-->
     <style>
         #page-top {
@@ -31,10 +45,6 @@
         }
         .select {
         background-color: #001B50;
-        }
-
-        .select option {
-
         }
 
     </style>
@@ -176,10 +186,17 @@
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #001B50;">
                     <h6 class="m-0 font-weight-bold" style="color: #ffffff;">대기 현황</h6>
                 </div>
+
+                <ul class="bxslider">
+                    <li><img src="/static/img/yesterday_icon.svg" style="display:block; margin: 0 auto; width:45px; height:45px;"></li>
+                    <li><img src="/static/img/yesterday_icon.svg" style="display:block; margin: 0 auto; width:45px; height:45px;"></li>
+                    <li><img src="/static/img/yesterday_icon.svg" style="display:block; margin: 0 auto; width:45px; height:45px;"></li>
+                </ul>
+
                 <!--<div class="card-body">
                     {{plot_sensor|safe}}
                 </div>-->
-                <table>
+               <!-- <table>
                     <colgroup>
                         <col style="width:130px;">
                         <col style="width:100px;">
@@ -220,7 +237,7 @@
                         <td></td>
                         <td></td>
                     </tr>
-                </table>
+                </table>-->
 
             </div>
         </div>
@@ -324,6 +341,10 @@
     <!-- Page level custom scripts -->
     <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+
+
+
+
 
 </body>
 

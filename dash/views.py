@@ -274,6 +274,33 @@ def index(request):
 
     plot_sensor = plot(fig_sensor, output_type='div')
 
+    # 미세먼지
+    region_dust = df_sensor['dust'].iloc[0] #주거단지 미세먼지
+    future_dust = df_sensor['dust'].iloc[1] #미래형자동차 미세먼지
+    R_dust = df_sensor['dust'].iloc[2] #R&D연구시설단지 미세먼지
+    # 초미세먼지
+    region_superdust = df_sensor['superdust'].iloc[0]  # 주거단지
+    future_superdust = df_sensor['superdust'].iloc[1]  # 미래형자동차
+    R_superdust = df_sensor['superdust'].iloc[2]  # R&D연구시설단지
+    # tvoc
+    region_tvoc = df_sensor['tvoc'].iloc[0]  # 주거단지
+    future_tvoc = df_sensor['tvoc'].iloc[1]  # 미래형자동차
+    R_tvoc = df_sensor['tvoc'].iloc[2]  # R&D연구시설단지
+    # temp
+    region_temp = df_sensor['temp'].iloc[0]  # 주거단지
+    future_temp = df_sensor['temp'].iloc[1]  # 미래형자동차
+    R_temp = df_sensor['temp'].iloc[2]  # R&D연구시설단지
+    # humid
+    region_humid = df_sensor['humid'].iloc[0]  # 주거단지
+    future_humid = df_sensor['humid'].iloc[1]  # 미래형자동차
+    R_humid = df_sensor['humid'].iloc[2]  # R&D연구시설단지
+
+
+
+
+
+
+
     # 서버값 불러오기- 회사 데이터 쌓이는 것
     conn = pymysql.connect(host='172.30.1.220', user='gasi', password='gasi1234!', database='TSG_DB', port=3306,
                            charset='utf8')
@@ -291,6 +318,21 @@ def index(request):
                                                        'plot_div7': plot_fig_pie,
                                                        'plot_div8': plot_lastWeek,
                                                        'plot_sensor': plot_sensor,
+                                                       'region_dust': region_dust,
+                                                       'future_dust': future_dust,
+                                                       'R_dust': R_dust,
+                                                       'region_superdust': region_superdust,
+                                                       'future_superdust': future_superdust,
+                                                       'R_superdust': R_superdust,
+                                                       'region_tvoc': region_tvoc,
+                                                       'future_tvoc': future_tvoc,
+                                                       'R_tvoc': R_tvoc,
+                                                       'region_temp': region_temp,
+                                                       'future_temp': future_temp,
+                                                       'R_temp': R_temp,
+                                                       'region_humid': region_humid,
+                                                       'future_humid': future_humid,
+                                                       'R_humid': R_humid,
                                                        }
                   )
 

@@ -186,12 +186,48 @@
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #001B50;">
                     <h6 class="m-0 font-weight-bold" style="color: #ffffff;">대기 현황</h6>
                 </div>
+                <br>
 
-                <ul class="bxslider">
-                    <li><img src="/static/img/yesterday_icon.svg" style="display:block; margin: 0 auto; width:45px; height:45px;"></li>
-                    <li><img src="/static/img/yesterday_icon.svg" style="display:block; margin: 0 auto; width:45px; height:45px;"></li>
-                    <li><img src="/static/img/yesterday_icon.svg" style="display:block; margin: 0 auto; width:45px; height:45px;"></li>
-                </ul>
+                <div class="align-items-center justify-content-between">
+                    <h6 style="color: white; font-size: 13pt;"><center><b>주거 단지</b></center></h6>
+                </div>
+                <br>
+                <div class="row container-fluid" >
+                    <div class="col-3" style="padding-top: 0px;">
+                        <img src="/static/img/thermometer.png" style="display:block; margin: 0 auto; width:45px; height:45px;">
+                    </div>
+                    <div class="col-3" style="padding-top: 0px; color: white;">
+                        <b>온도</b><br>{{region_temp|safe}}(&#8451;)
+                    </div>
+                    <div class="col-3" style="padding-top: 0px;">
+                        <img src="/static/img/humidity.png" style="display:block; margin: 0 auto; width:45px; height:45px;">
+                    </div>
+                    <div class="col-3" style="padding-top: 0px; color: white;">
+                        <b>습도</b><br>{{region_humid|safe}}(%)
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row container-fluid" >
+                    <div class="col-2" style="padding-top: 0px;">
+                        <img src="/static/img/bad.svg" style="display:block; margin: 0 auto; width:45px; height:45px;">
+                    </div>
+                    <div class="col-2" style="padding-top: 0px; color: white;">
+                        <b>미세먼지</b><br>{{region_dust|safe}}(&#181;g/m&#179;)
+                    </div>
+                    <div class="col-2" style="padding-top: 0px;">
+                        <img src="/static/img/good.svg" style="display:block; margin: 0 auto; width:45px; height:45px;">
+                    </div>
+                    <div class="col-2" style="padding-top: 0px; color: white;">
+                        <b>초미세먼지</b><br>{{region_superdust|safe}}(&#181;g/m&#179;)
+                    </div>
+                    <div class="col-2" style="padding-top: 0px;">
+                        <img src="/static/img/verygood.svg" style="display:block; margin: 0 auto; width:45px; height:45px;">
+                    </div>
+                    <div class="col-2" style="padding-top: 0px; color: white;">
+                        <b>tvoc</b><br>{{region_tvoc|safe}}(ppb)
+                    </div>
+                </div>
 
                 <!--<div class="card-body">
                     {{plot_sensor|safe}}

@@ -4,11 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="382640d9-3cdf-47b4-8fef-bbed62fa3c55" name="Changes" comment="" />
+    <list default="true" id="382640d9-3cdf-47b4-8fef-bbed62fa3c55" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/dash/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash/templates/dash/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash/templates/dash/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash/templates/dash/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash/templates/dash/map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/secon_dash_prj/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/secon_dash_prj/urls.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -29,6 +44,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\secon\SECON_gasi_dash\dash\templates" />
       <recent name="C:\secon\SECON_gasi_dash" />
     </key>
   </component>
@@ -42,5 +58,16 @@
       <updated>1648536452806</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

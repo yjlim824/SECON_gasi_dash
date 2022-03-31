@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>가시 Dashboard</title>
+
+    <!-- Custom fonts for this template
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">-->
+
+
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <!-- bxslider -->
+    <link rel="stylesheet" href="{% static 'css/jquery.bxslider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.bxslider.min.css' %}">
+
+        <!-- bxslider -->
+    <script src="{% static 'js/jquery.bxslider.min.js' %}"></script>
+    <script src="{% static 'js/jquery.bxslider.js' %}"></script>
+
+    <script>
+        $(document).ready(fuction(){
+            $('.bxslider').bxSlider();
+        });
+    </script>
+
+    <!--배경색 설정-->
+    <style>
+        #page-top {
+            background-color: #00153E;
+        }
+        .select {
+        background-color: #001B50;
+        }
+
+    </style>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #001B50;">
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link " href="#">
+                    <img alt="gasi" src="/static/img/gasi.png" style="display:block; margin: 0 auto; width:90px; height:80px;">
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+
+
+            <!-- Nav Item - Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.html" >
+                    <div class="row container-fluid">
+                        <div class="col-3"><img src="/static/img/index_icon.svg" style="display:block; margin: 0 auto; width:20px; height:20px;"></div>
+                        <div class="col-9"><span style="font-size:11pt">실시간 정보</span></div>
+                    </div>
+
+
+                </a>
+
+                <a class="nav-link" href="map.html" >
+                    <div class="row container-fluid">
+                        <div class="col-3"><img src="/static/img/map_icon.svg" style="display:block; margin: 0 auto; width:20px; height:20px;"></div>
+                        <div class="col-9"><span style="font-size:11pt">지도</span></div>
+                    </div>
+
+                </a>
+
+                <a class="nav-link" href="report.html" >
+                     <div class="row container-fluid">
+                        <div class="col-3"><img src="/static/img/report_icon.svg" style="display:block; margin: 0 auto; width:20px; height:20px;"></div>
+                        <div class="col-9"><span style="font-size:11pt">기간별 분석</span></div>
+                    </div>
+                </a>
+
+                <a class="nav-link" href="manager.html" >
+                    <div class="row container-fluid">
+                        <div class="col-3"><img src="/static/img/setting_icon.svg" style="display:block; margin: 0 auto; width:20px; height:20px;"></div>
+                        <div class="col-9"><span style="font-size:11pt">계정 관리</span></div>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+        </ul>
+        <!-- End of Sidebar -->
+                <!-- Content Wrapper -->
+        <div class="container-fluid" style="background-color: #00153E; padding: 0px;">
+            <div id="content-wrapper" class="d-flex flex-column" style="background-color: #00153E; padding: 13px;">
+
+         <!-- Main Content -->
+                {% block content %}
+
+                <!-- End of Main Content -->
+                {% endblock %}
+                <!-- Footer -->
+
+
+
+        </div>
+            <footer class="sticky-footer" style="background-color: #001B50;"><!-- 배경색 변경 -->
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto" >
+                        <span>Copyright &copy; Your Website 2021</span>
+                    </div>
+                </div>
+        </footer>
+        <!-- End of Content Wrapper -->
+
+        </div>
+    </div>
+        <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Bootstrap css
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+-->
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+
+
+
+
+
+</body>
+
+</html>
+

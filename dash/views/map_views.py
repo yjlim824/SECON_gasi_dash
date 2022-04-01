@@ -2,13 +2,14 @@
 from django.shortcuts import render, redirect
 from plotly.offline import plot
 import plotly.graph_objects as go
+import plotly.express as px
 from plotly.subplots import make_subplots
 
 def map(request):
 
     people = [20, 30, 10]
 
-    colors = ['rgba(137,176,255,0.8)', 'rgba(172,217,71,0.8)', 'rgba(227,151,49,0.8)', 'rgba(236,40,40,0.8)', '#ffffff']
+    colors = ['rgba(137,176,255,0.6)', 'rgba(172,217,71,0.6)', 'rgba(227,151,49,0.6)', 'rgba(236,40,40,0.6)', '#ffffff']
     color_order = []
     color1 = []
     color2 = []
@@ -31,12 +32,13 @@ def map(request):
     color3.append(color_order[2])
     color3.append(color_order[2])
 
+
     fig_pie = go.Figure()
     fig_pie.add_trace(
         go.Pie(labels=['60m', ''],
                values=[people[0], 0],
-               textinfo='percent',
-               insidetextorientation='tangential',
+               #textinfo='percent',
+               #insidetextorientation='tangential',
                marker_colors=color1,
                marker_line_color='rgba(0,0,0,0)',
                marker_line_width=1.5,

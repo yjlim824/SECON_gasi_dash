@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="background-color: #00153E;">
+  <!--
+  <div>범례 <table>
+    <td bgcolor="red" style="color:white">풍류주택가</td>
+    <td bgcolor="orange" style="color:white">풍류매화 주택가</td>
+    <td bgcolor="green" style="color:white">부안초등학교</td>
+    <td bgcolor="darkblue" style="color:white">부안상설시장</td>
+    <td bgcolor="blue" style="color:white">시외버스터미널</td>
+    <td bgcolor="gray" style="color:white">풍류매화 상가거리</td>
+    <td bgcolor="purple" style="color:white">해뜰마루</td>
+  </table>
+  </div>
+  -->
+  <form method="post">
+    <button id= 'mapButton' type="submit" value="mapbutton" class="btn btn-default">
+      <span class="glyphicon glyphicon-dashboard" aria-hidden="true">
+        클릭
+      </span>
+    </button>
+  </form>
+
+    {{map|safe}}
+
+
+</div>
+
+<!-- 버튼 클릭시 이벤트 발생시키려고 만들어 놓았는데 안되네요-->
+<script>
+  const onClick = () => {
+      console.log('버튼클릭');
+
+  };
+  document.querySelector('#mapButton').addEventListener('click', onClick);
+</script>
+{% endblock %}

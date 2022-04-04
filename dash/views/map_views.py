@@ -44,12 +44,12 @@ def map(request):
                marker_line_width=1.5,
                textfont_size=14,
                textfont_color="rgba(0,0,0,0)",
-               #hole=0.65
+               hole=0.665
                )
     )
     fig_pie.update_traces(textinfo='none')
     fig_pie.update_layout(#width=500,  # 원형그래프가 상자 안에 들어 올 수 있게 크기 조정
-                          height=300,
+                          height=150,
                           #annotations=[dict(text='실시간<br>유동인구', font_size=17, showarrow=False)],
                           margin=dict(l=0, r=0, t=0, b=0),
                           paper_bgcolor="rgba(0,0,0,0)",
@@ -72,12 +72,12 @@ def map(request):
                marker_line_width=1.5,
                textfont_size=14,
                textfont_color="rgba(0,0,0,0)",
-               # hole=0.5
+               hole=0.5
                )
     )
     fig_pie2.update_traces(textinfo='none')
     fig_pie2.update_layout(  # width=500,  # 원형그래프가 상자 안에 들어 올 수 있게 크기 조정
-        height=200,
+        height=100,
         # annotations=[dict(text='실시간<br>유동인구', font_size=17, showarrow=False)],
         margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="rgba(0,0,0,0)",
@@ -104,7 +104,7 @@ def map(request):
     )
     fig_pie3.update_traces(textinfo='none')
     fig_pie3.update_layout(  # width=500,  # 원형그래프가 상자 안에 들어 올 수 있게 크기 조정
-        height=100,
+        height=50,
         # annotations=[dict(text='실시간<br>유동인구', font_size=17, showarrow=False)],
         margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="rgba(0,0,0,0)",

@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="382640d9-3cdf-47b4-8fef-bbed62fa3c55" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dash/templates/dash/map2.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dash/views/map2_views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dash/templates/dash/secon.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dash/views/secon_views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash/templates/dash/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash/templates/dash/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash/templates/dash/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash/templates/dash/map.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash/views/dash_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash/views/dash_views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash/views/map_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash/views/map_views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,7 +39,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../dash/dash-master" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">

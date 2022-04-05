@@ -4,8 +4,10 @@ import plotly.graph_objects as go
 import pandas as pd
 from datetime import datetime, timedelta
 import pymysql
+from ..models import Weather
 
 def secon(request):
+
     # 전일 방문객 -> 대구달성 값으로 완료
     df = pd.read_csv('./data/DeviceCountDay.csv')
     df['time'] = pd.to_datetime(df['time']).dt.date
@@ -98,7 +100,7 @@ def secon(request):
     df = pd.read_csv('./data/DeviceCountDay.csv')
     zoneDay = go.Figure()
     region = df[df['zone'] != '전체']  # 전체 값을 빼고 데이터 프레임 만듦
-    y = ['R&D<br>연구시설단지', '미래형자동차', '주거단지']
+    y = ['R&D    <br>연구시설 ', '미래형  <br>자동차  ', '주거단지 ']
     x = region['data']
     zoneDay.add_trace(
         go.Bar(
@@ -111,16 +113,17 @@ def secon(request):
     zoneDay.update_traces(marker_color=['rgba(123,104,238,0.7)', 'rgba(137,176,255,0.7)', 'rgba(164,224,254,0.7)'],
                           marker_line_color='#ffffff',
                           marker_line_width=0.7, opacity=1, textposition='inside',
-                          textfont_size=12, textfont_color="#ffffff")
-    zoneDay.update_layout(  # width=540,
-        height=200,
+                          textfont_size=9, textfont_color="#ffffff")
+    zoneDay.update_layout(
+        width=180,
+        height=120,
         xaxis=dict(autorange=True, zeroline=False),  # 그래프의 그리드와 영점선 삭제
         yaxis=dict(visible=True),
         margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",  # 그래프 배경 투명색
         autosize=True,
-        font=dict(color="#ffffff", size=12, )  # 그래프 폰트 색상 변경
+        font=dict(color="#ffffff", size=9, )  # 그래프 폰트 색상 변경
     )
     plot_zoneDay = plot(zoneDay, output_type='div')
 
@@ -152,14 +155,15 @@ def secon(request):
             line=dict(color='#FFAB7C'),
             mode='markers + lines'))
 
-    fig_w.update_layout(  # width=500,
-        height=260,
+    fig_w.update_layout(
+        width=180,
+        height=120,
         margin=dict(l=0, r=0, t=20, b=0),
         xaxis=dict(showgrid=False),
-        paper_bgcolor="#001B50",
+        paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         autosize=True,
-        font=dict(color="#ffffff")
+        font=dict(color="#ffffff", size=9,)
     )
     plot_fig_w = plot(fig_w, output_type='div')
 
@@ -272,24 +276,28 @@ def secon(request):
 
     # 미세먼지
     region_dust = df_sensor['dust'].iloc[0]  # 주거단지 미세먼지
-    future_dust = df_sensor['dust'].iloc[1]  # 미래형자동차 미세먼지
-    R_dust = df_sensor['dust'].iloc[2]  # R&D연구시설단지 미세먼지
+
     # 초미세먼지
     region_superdust = df_sensor['superdust'].iloc[0]  # 주거단지
-    future_superdust = df_sensor['superdust'].iloc[1]  # 미래형자동차
-    R_superdust = df_sensor['superdust'].iloc[2]  # R&D연구시설단지
+
     # tvoc
     region_tvoc = df_sensor['tvoc'].iloc[0]  # 주거단지
-    future_tvoc = df_sensor['tvoc'].iloc[1]  # 미래형자동차
-    R_tvoc = df_sensor['tvoc'].iloc[2]  # R&D연구시설단지
+
     # temp
     region_temp = df_sensor['temp'].iloc[0]  # 주거단지
-    future_temp = df_sensor['temp'].iloc[1]  # 미래형자동차
-    R_temp = df_sensor['temp'].iloc[2]  # R&D연구시설단지
+
     # humid
     region_humid = df_sensor['humid'].iloc[0]  # 주거단지
-    future_humid = df_sensor['humid'].iloc[1]  # 미래형자동차
-    R_humid = df_sensor['humid'].iloc[2]  # R&D연구시설단지
+
+
+    # model
+    weather = Weather()
+    weather.temperature = region_temp
+    weather.dust = region_dust
+    weather.superdust = region_superdust
+    weather.humid = region_humid
+    weather.tvoc = region_tvoc
+    weather.save()
 
     # 서버값 불러오기- 회사 데이터 쌓이는 것
     conn = pymysql.connect(host='172.30.1.220', user='gasi', password='gasi1234!', database='TSG_DB', port=3306,
@@ -307,19 +315,12 @@ def secon(request):
                                                        'plot_div8': plot_lastWeek,
                                                        'plot_sensor': plot_sensor,
                                                        'region_dust': region_dust,
-                                                       'future_dust': future_dust,
-                                                       'R_dust': R_dust,
                                                        'region_superdust': region_superdust,
-                                                       'future_superdust': future_superdust,
-                                                       'R_superdust': R_superdust,
                                                        'region_tvoc': region_tvoc,
-                                                       'future_tvoc': future_tvoc,
-                                                       'R_tvoc': R_tvoc,
                                                        'region_temp': region_temp,
-                                                       'future_temp': future_temp,
-                                                       'R_temp': R_temp,
                                                        'region_humid': region_humid,
-                                                       'future_humid': future_humid,
-                                                       'R_humid': R_humid,
+                                                       'weather': weather,
                                                        }
                   )
+
+

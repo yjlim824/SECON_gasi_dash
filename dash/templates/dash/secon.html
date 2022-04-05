@@ -11,14 +11,15 @@
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
     <style>
         body{
-        background-image: url('../../static/img/booth.svg');
+        background-image: url('../../static/img/sebooth.png');
         background-color: rgb(0, 18, 54);
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 60% 60%;
+        background-position: 70% 60%
         }
         .container{
         position: absolute;
-        top: 50%;
+        top: 0%;
         left: 50%;
         transform: translate(-50%, -50%);
         }
@@ -30,23 +31,6 @@
     <div class="row">
          <!-- Earnings (전일 방문객) Card Example -->
         <div class="col-3">
-            <div class="row">
-                <div class="col-10">
-
-                        <!-- 지역별 방문객
-                            <div style="background-color: rgba(107, 113, 157, 0.35); border-radius: 0.3rem;"> 
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                                     style="background-color: rgba(107, 113, 157, 0.15); ">
-                                    <h6 class="m-0 font-weight-bold " style="color: #ffffff;">지역별 방문객</h6>
-                                </div>
-                                <div>
-                                    {{plot_div5|safe}}
-                                </div>
-
-                            </div>-->
-
-                </div>
-            </div>
         </div>
         <div class="col-2">
             <div style="background-color: rgba(107, 113, 157, 0.15); border-radius: 0.3rem;"> <!--전일방문객 글자상자 밖의 공간색 -->
@@ -88,6 +72,81 @@
                                                                                     style="display:block; margin: 0 auto; width:50px; height:50px;">
                     </div>
                     <div class="col-8" style="padding-left:0;">{{plot_div4|safe}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <!-- 지역별 방문객 -->
+            <div class="row container-fluid">
+                <div class="col-1"><img src="/static/img/pin.png" style="display:block; margin: 0 auto; width:21px; height:21px; margin:0;"></div>
+                <div class="col-5"><span class="m-0 font-weight-bold " style="font-size:10pt; color: #ffffff;"> 지역별 방문객</span></div>
+                <div class="col-1" style="margin-left: 10px;"><img src="/static/img/next-week.png" style="display:block; margin: 0 auto; width:22px; height:22px; margin:0;"></div>
+                <div class="col-4"><span class="m-0 font-weight-bold " style="font-size:10pt; color: #ffffff;"> 요일별 방문객</span></div>
+            </div>
+            <div class="row container-fluid" style="padding-left: 35px; padding-right: 0px;">
+                <div class="col-6" style="padding-left: 0px; padding-right: 5px;">
+                    <div style="background-color: rgba(107, 113, 157, 0.2); border-radius: 0.5rem; margin-top: 10px;">
+                        <center><br> {{plot_div5|safe}} <br></center>
+                    </div>
+                </div>
+                <div class="col-6" style="padding-left: 5px;padding-right: 5px;">
+                    <div style="background-color: rgba(107, 113, 157, 0.2); border-radius: 0.5rem; margin-top: 10px;">
+                        <center><br>{{plot_div6|safe}}<br></center>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- 대기현황 -->
+            <div class="row container-fluid">
+                <div class="col-1"><img src="/static/img/weather.png" style="display:block; margin: 0 auto; width:21px; height:21px; margin:0;"></div>
+                <div class="col-11"><span class="m-0 font-weight-bold " style="font-size:11pt; color: #ffffff;"> 대기 현황</span></div>
+            </div>
+            <div class="row container-fluid" style=" margin-left: 5%; margin-top: 10px; padding: 0;">
+                <div class="col-2" style="margin-right: 7px; padding-top: 10px; padding-bottom: 2%; color: white; font-size: 8pt; text-align:center; background-color: rgba(107, 113, 157, 0.2); border-radius: 0.5rem;">
+                    <b>온도</b><br>{{region_temp|safe}}(&#8451;)<br>
+                    <img src="/static/img/thermometer.png" style="display:block; margin-top: 1%; width:45px; height:45px;">
+                </div>
+                <div class="col-2" style="margin-right: 7px; padding-top: 10px; padding-bottom: 2%; color: white; font-size: 8pt; text-align:center; background-color: rgba(107, 113, 157, 0.2); border-radius: 0.5rem;">
+                    <b>습도</b><br>{{region_humid|safe}}(%)<br>
+                    <img src="/static/img/humidity.png" style="display:block; margin-top: 1%; width:45px; height:45px;">
+                </div>
+                <div class="col-2" style="margin-right: 7px; padding-top: 10px; padding-bottom: 2%; color: white; font-size: 8pt; text-align:center; background-color: rgba(107, 113, 157, 0.2); border-radius: 0.5rem;">
+                    <b>미세먼지 </b>{{region_dust|safe}}(%)<br>
+                    {% if weather.dust < 31 %}
+                        <img src="/static/img/verygood.svg" style="display:block; margin-top: 1%; width:40px; height:40px;">
+                    {% elif weather.dust < 81 %}
+                        <img src="/static/img/good.svg" style="display:block; margin-top: 1%; width:40px; height:40px;">
+                    {% elif weather.dust < 151 %}
+                        <img src="/static/img/bad.svg" style="display:block; margin-top: 1%; width:45px; height:45px;">
+                    {% elif weather.dust >= 151 %}
+                        <img src="/static/img/verybad.svg" style="display:block; margin-top: 1%; width:40px; height:40px;">
+                    {% endif %}
+                </div>
+                <div class="col-2" style="margin-right: 7px; padding-top: 10px; padding-bottom: 2%; color: white; font-size: 8pt; text-align:center; background-color: rgba(107, 113, 157, 0.2); border-radius: 0.5rem;">
+                    <b>초미세먼지</b><br>{{region_superdust|safe}}(%)<br>
+                    {% if weather.superdust < 16 %}
+                        <img src="/static/img/verygood.svg" style="display:block; margin-top: 1%; width:40px; height:40px;">
+                    {% elif weather.superdust < 36 %}
+                        <img src="/static/img/good.svg" style="display:block; margin-top: 1%; width:40px; height:40px;">
+                    {% elif weather.superdust < 76 %}
+                        <img src="/static/img/bad.svg" style="display:block; margin-top: 1%; width:45px; height:45px;">
+                    {% elif weather.superdust >= 76 %}
+                        <img src="/static/img/verybad.svg" style="display:block; margin-top: 1%; width:40px; height:40px;">
+                    {% endif %}
+                </div>
+                <div class="col-2" style="padding-top: 10px; padding-bottom: 2%; color: white; font-size: 8pt; text-align:center; background-color: rgba(107, 113, 157, 0.2); border-radius: 0.5rem;">
+                    <b>tvoc </b>{{region_tvoc|safe}}(ppb)<br>
+                    {% if weather.tvoc < 301 %}
+                        <img src="/static/img/verygood.svg" style="display:block; margin-top: 1%; width:40px; height:40px;">
+                    {% elif weather.tvoc < 601 %}
+                        <img src="/static/img/good.svg" style="display:block; margin-top: 1%; width:40px; height:40px;">
+                    {% elif weather.tvoc < 2001 %}
+                        <img src="/static/img/bad.svg" style="display:block; margin-top: 1%; width:45px; height:45px;">
+                    {% elif weather.tvoc >= 2001 %}
+                        <img src="/static/img/verybad.svg" style="display:block; margin-top: 1%; width:40px; height:40px;">
+                    {% endif %}
                 </div>
             </div>
         </div>

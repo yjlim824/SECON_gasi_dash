@@ -7,7 +7,9 @@
     <list default="true" id="382640d9-3cdf-47b4-8fef-bbed62fa3c55" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash/templates/dash/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash/templates/dash/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash/templates/dash/secon.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash/templates/dash/secon.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash/views/secon_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash/views/secon_views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

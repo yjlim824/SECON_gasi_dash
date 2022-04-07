@@ -7,5 +7,5 @@ urlpatterns = [
     path('index.html', dash_views.index),
     path('map.html', map_views.map, name='map'),
     path('map2.html', map2_views.map, name='map2'),
-    path('secon.html', secon_views.secon, name='secon'),
+    path('secon', secon_views.secon, name='secon'),
 ]

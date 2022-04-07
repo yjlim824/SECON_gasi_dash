@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import pandas as pd
 from datetime import datetime, timedelta
 import pymysql
-from ..models import Weather
+from ..models import Weather , Distance
 
 def secon(request):
 
@@ -167,33 +167,7 @@ def secon(request):
     )
     plot_fig_w = plot(fig_w, output_type='div')
 
-    # 실시간 방문객 -> 대구달성 값으로 완료
-    df_visitor = pd.read_csv('./data/DeviceCountHourly.csv')
-    current_visitor = df_visitor[df_visitor['zone'] != '전체']
-    fig_pie = go.Figure()
-    fig_pie.add_trace(
-        go.Pie(labels=current_visitor['zone'],
-               values=current_visitor['data'],
-               textinfo='percent',
-               insidetextorientation='tangential',
-               marker_colors=['rgba(137,176,255,0.9)', 'rgba(250,144,144,0.9)', 'rgba(244,212,132,0.9)'],
-               marker_line_color='#ffffff',
-               marker_line_width=1.5,
-               textfont_size=14,
-               textfont_color="#ffffff",
-               hole=0.5)
-    )
-    fig_pie.update_layout(  # width=500,  # 원형그래프가 상자 안에 들어 올 수 있게 크기 조정
-        height=300,
-        annotations=[dict(text='<b>실시간<br>유동인구</b>', font_size=15, showarrow=False)],
-        margin=dict(l=0, r=0, t=0, b=0),
-        paper_bgcolor="#001B50",
-        plot_bgcolor="rgba(0,0,0,0)",
-        autosize=True,
-        font=dict(color="#ffffff"),
 
-    )
-    plot_fig_pie = plot(fig_pie, output_type='div')
 
     # 지역별 지난주 재방문객 -> 대구달성 값으로 완료
     df = pd.read_csv('./data/DeviceCountRevisit.csv')
@@ -305,13 +279,59 @@ def secon(request):
     sql = 'SELECT * FROM TSG_DB.TSG_TE_DEVICE_SCAN_DATA_WIFI WHERE MAC = 88205820257752 ORDER BY `TIME` DESC '
     df = pd.read_sql(sql, conn)
 
+
+    # 거리별 인원수
+    people = [10, 30, 5] # 인원수 임의의 값 넣어줌
+    distance = Distance()
+    distance.long = people[1]
+    distance.middle = people[0]
+    distance.short = people[2]
+
+    # 실시간 방문객 -> 대구달성 값으로 완료
+    df_visitor = pd.read_csv('./data/DeviceCountHourly.csv')
+    current_visitor = df_visitor[df_visitor['zone'] != '전체']
+    colors = []
+    for i in people:
+        if i < 7:
+            colors.append('rgba(137,176,255,0.85)')
+        elif i < 20:
+            colors.append('rgba(250,144,144,0.85)')
+        elif i >= 20:
+            colors.append('rgba(244,212,132,0.85)')
+
+    fig_pie = go.Figure()
+    fig_pie.add_trace(
+        go.Pie(labels=['10m', '15m', '5m'],
+               values=people,
+               textinfo='percent',
+               insidetextorientation='tangential',
+               marker_colors=colors,
+               marker_line_color='#ffffff',
+               marker_line_width=1.5,
+               textfont_size=10,
+               textfont_color="#ffffff",
+               hole=0.4)
+    )
+    fig_pie.update_layout(  # width=500,  # 원형그래프가 상자 안에 들어 올 수 있게 크기 조정
+        height=270,
+        annotations=[dict(text='<b>실시간<br>방문객</b>', font_size=11, showarrow=False)],
+        margin=dict(l=0, r=0, t=0, b=0),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        autosize=True,
+        font=dict(color="#ffffff"),
+        # showlegend=False,
+
+    )
+    plot_fig_pie = plot(fig_pie, output_type='div')
+
     return render(request, "dash/secon.html", context={'plot_div1': plot_div1,
                                                        'plot_div2': plot_div2,
                                                        'plot_div3': plot_div3,
                                                        'plot_div4': plot_div4,
                                                        'plot_div5': plot_zoneDay,
                                                        'plot_div6': plot_fig_w,
-                                                       'plot_div7': plot_fig_pie,
+                                                       'plot_pie': plot_fig_pie,
                                                        'plot_div8': plot_lastWeek,
                                                        'plot_sensor': plot_sensor,
                                                        'region_dust': region_dust,
@@ -320,6 +340,7 @@ def secon(request):
                                                        'region_temp': region_temp,
                                                        'region_humid': region_humid,
                                                        'weather': weather,
+                                                       'distance': distance,
                                                        }
                   )
 

@@ -4,105 +4,51 @@ import plotly.graph_objects as go
 import pandas as pd
 from datetime import datetime, timedelta
 import pymysql
-from ..models import Weather , Distance
+from ..models import Weather, Distance
 
 def secon(request):
 
-    # 전일 방문객 -> 대구달성 값으로 완료
-    df = pd.read_csv('./data/DeviceCountDay.csv')
-    df['time'] = pd.to_datetime(df['time']).dt.date
-    df['time'] = pd.to_datetime(df['time'], errors='coerce')
-    now = datetime.today()  # 현재 시간
-    yesterday = (now - timedelta(days=40)).strftime('%Y-%m-%d')  # 어제 날짜, 시간값 삭제 임시로 날짜 설정
-    df = df[df['time'] == yesterday]
-    data = df.iloc[2][2]  # 전체값 지정
-    # deltas = df.iloc[-2][:-1].sum()
-    fig1 = go.Figure()
-    fig1.add_trace(
-        go.Indicator(
-            mode="number",
-            value=data,
-            title={'text': "전일 방문객", 'font': {'size': 15, 'color': '#C5C5C5'}},
-            number={'suffix': '명', 'font': {'size': 20, 'color': '#ffffff'}, 'valueformat': ',.0f'},
-            # delta=dict(reference=deltas, increasing=dict(color='blue'))
-        )
-    )
-    fig1.update_layout(  # width=290,  # 데이터를 가운데로 맞추기 위해 넓이 없앰
-        height=70,
-        margin=dict(l=0, r=0, b=0, t=0),
-        paper_bgcolor="rgba(0,0,0,0)")  # 텍스트상자배경색
-    plot_div1 = plot(fig1, output_type='div')
+    # 현재 방문객
+    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountMin')
+    df = df[df['data'] != 0]
+    data = df['data'].iloc[0]
+    currentVisitor = data
 
-    # 이번달 총 방문객 -> 대구달성 값으로 완료
-    df = pd.read_csv('./data/DeviceCountMonthly.csv')
-    data = df['data'][2]  # 이번달 지역 전체 총 방문객
-    fig2 = go.Figure()
-    fig2.add_trace(
-        go.Indicator(
-            mode="number",
-            value=data,
-            title={'text': "이번달 총 방문객", 'font': {'size': 15, 'color': '#C5C5C5'}},
-            number={'suffix': '명', 'font': {'size': 20, 'color': '#FFFFFF'}, 'valueformat': ',d'},
-        )
-    )
-    fig2.update_layout(  # width=290,
-        height=70,
-        paper_bgcolor="rgba(0,0,0,0)")
-    plot_div2 = plot(fig2, output_type='div')
-
-    # 체류 시간 -> 대구달성 값으로 완료
-    df = pd.read_csv('./data/DeviceResidenceTime.csv')
-    df = df[df['zone'] == '전체']
-    df['time'] = pd.to_datetime(df['time']).dt.date
-    df['time'] = pd.to_datetime(df['time'], errors='coerce')
-    now = datetime.today()
-    yesterday = (now - timedelta(days=40)).strftime('%Y-%m-%d')  # 임시로 날짜 설정
-    df = df[df['time'] == yesterday]
+    # 체류 시간
+    df = pd.read_json('http://222.108.138.7:38888/v1/TEST/DeviceResidenceTime')
     data = df['data'].iloc[0]
     data = data // 100
-    data
-    fig3 = go.Figure()
-    fig3.add_trace(
-        go.Indicator(
-            mode="number",
-            value=data,
-            title={'text': "<b>체류 시간</b>", 'font': {'size': 15, 'color': '#C5C5C5'}},
-            number={'prefix': '<b>', 'suffix': '분</b>', 'font': {'size': 20, 'family': "Arial", 'color': '#FFFFFF'},
-                    'valueformat': 'd'},
-        )
-    )
-    fig3.update_layout(  # width=290,
-        height=70,
-        paper_bgcolor="rgba(0,0,0,0)")
-    plot_div3 = plot(fig3, output_type='div')
+    periodVisitor = data
 
-    # 지난주 재방문객 -> 대구달성 값으로 완료
-    df = pd.read_csv('./data/DeviceCountRevisit.csv')
-    df = df[df['zone'] == '전체']
+
+    # 오늘 총 방문객
+    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountHourly')
+    data = df['data'].sum()
+    dataTodayAll = data
+
+    # 총 누적 방문객 -> 확인해보기
+    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountDay?from=2022-04-11&to=2022-04-16')
+    data = df['data'].sum() + dataTodayAll
+    allVisitor = data
+
+    # 일별 방문객
+    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountDay?from=2022-04-14&to=2022-04-18')
+
+    todayVisitor = go.Figure()
     df['time'] = pd.to_datetime(df['time']).dt.date
     df['time'] = pd.to_datetime(df['time'], errors='coerce')
-    data = df['data'].iloc[-7:].sum()
-    fig4 = go.Figure()
-    fig4.add_trace(
-        go.Indicator(
-            mode="number",
-            value=data,
-            title={'text': "지난주 재방문객", 'font': {'size': 15, 'color': '#C5C5C5'}},
-            number={'suffix': '명', 'font': {'size': 20, 'color': '#FFFFFF'}, 'valueformat': ',d'},
-        )
-    )
-    fig4.update_layout(  # width=290,
-        height=70,
-        paper_bgcolor="rgba(0,0,0,0)")
-    plot_div4 = plot(fig4, output_type='div')
+    df = df[(df['time'] >= '2022-04-14') & (df['time'] <= '2022-04-18')]
+    x = df['data'].to_numpy()
+    x = x.tolist()
 
-    # 지역별 일일방문객 -> 대구달성 값으로 완료
-    df = pd.read_csv('./data/DeviceCountDay.csv')
-    zoneDay = go.Figure()
-    region = df[df['zone'] != '전체']  # 전체 값을 빼고 데이터 프레임 만듦
-    y = ['R&D    <br>연구시설 ', '미래형  <br>자동차  ', '주거단지 ']
-    x = region['data']
-    zoneDay.add_trace(
+
+    n = 3 - len(x)
+
+    for i in range(n):
+        x.append(0)
+
+    y = ['4-14', '4-15', '4-16']
+    todayVisitor.add_trace(
         go.Bar(
             y=y,
             x=x,
@@ -110,11 +56,12 @@ def secon(request):
             orientation='h',
         )
     )
-    zoneDay.update_traces(marker_color=['rgba(123,104,238,0.7)', 'rgba(137,176,255,0.7)', 'rgba(164,224,254,0.7)'],
-                          marker_line_color='#ffffff',
-                          marker_line_width=0.7, opacity=1, textposition='inside',
-                          textfont_size=9, textfont_color="#ffffff")
-    zoneDay.update_layout(
+    todayVisitor.update_traces(marker_color=['rgba(123,104,238,0.7)', 'rgba(137,176,255,0.7)', 'rgba(164,224,254,0.7)'],
+                               marker_line_color='#ffffff',
+                               marker_line_width=0.7, opacity=1, textposition='inside',
+                               textfont_size=9, textfont_color="#ffffff"
+                               )
+    todayVisitor.update_layout(
         width=180,
         height=120,
         xaxis=dict(autorange=True, zeroline=False),  # 그래프의 그리드와 영점선 삭제
@@ -125,33 +72,118 @@ def secon(request):
         autosize=True,
         font=dict(color="#ffffff", size=9, )  # 그래프 폰트 색상 변경
     )
-    plot_zoneDay = plot(zoneDay, output_type='div')
+    plot_todayVisitor = plot(todayVisitor, output_type='div')
 
-    # 지난요일별 방문객 -> 대구달성 값으로 완료
-    df_lastw = pd.read_csv('./data/DeviceCountDay.csv')
-    # del df_lastw['Unnamed: 0']
-    now = datetime.today()
-    weektoday = datetime.today().weekday()  # 오늘 요일구하기(0-월 6-일)
+    # 대기 그래프
+    df = pd.read_json('http://15.164.94.113:8000/v1/Gasi/SensorDataDayAverage')
+    df['time'] = pd.to_datetime(df['time']).dt.hour
+    df = df[(df['time'] >= 9) & (df['time'] <= 17)]
+    y = df['temperature']
+    x = df['time']
+    fig_t = go.Figure()
+    fig_t.add_trace(
+        go.Scatter(
+            x=x,
+            y=y,
+            line=dict(color='#FA9090'),
+            name='온도',
+            mode='markers + lines'))
+    fig_t.add_trace(
+        go.Scatter(
+            x=x,
+            y=df['humidity'],
+            line=dict(color='#A4E0FE'),
+            name='습도',
+            mode='markers + lines'))
 
-    df_lastw = df_lastw[df_lastw['zone'] == '전체']
-    df_lastw['time'] = pd.to_datetime(df_lastw['time']).dt.date
-    df_lastw['time'] = pd.to_datetime(df_lastw['time'], errors='coerce')
+    fig_t.update_layout(
+        width=350,
+        height=120,
+        margin=dict(l=0, r=0, t=10, b=0),
+        xaxis=dict(showgrid=False),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        autosize=True,
+        font=dict(color="#ffffff", size=9,)
+    )
+    fig_t.update_yaxes(range=[10, 30])
+    plot_fig_t = plot(fig_t, output_type='div')
 
-    startDate = now - timedelta(now.weekday()) - timedelta(8)  # 지난주 월요일 값을 구함
-    # startDate =startDate.strftime('%Y-%m-%d')
-    startDate = '2022-02-21'  # 임시값
-    # endDate = now - timedelta(now.weekday())-timedelta(1) #지난주 일요일 값 구함
-    endDate = '2022-02-27'  # 임시값
-    df_lastw = df_lastw[(df_lastw['time'] >= startDate) & (df_lastw['time'] < endDate)]
+    #미세먼지 초미세먼지
+    fig_d = go.Figure()
+    fig_d.add_trace(
+        go.Scatter(
+            x=x,
+            y=df['pm10'],
+            line=dict(color='#F6D787'),
+            name='미세먼지',
+            mode='markers + lines'))
+    fig_d.add_trace(
+        go.Scatter(
+            x=x,
+            y=df['pm2_5'],
+            line=dict(color='#84EA7C'),
+            name='초미세먼지',
+            mode='markers + lines'))
 
-    y = df_lastw['data']
-    x = ['월', '화', '수', '목', '금', '토', '일']
+    fig_d.update_layout(
+        width=350,
+        height=120,
+        margin=dict(l=0, r=0, t=10, b=0),
+        xaxis=dict(showgrid=False),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        autosize=True,
+        font=dict(color="#ffffff", size=9, )
+    )
+    fig_d.update_yaxes(range=[0, 20])
+    plot_fig_d = plot(fig_d, output_type='div')
+
+    # tvoc
+    fig_tvoc = go.Figure()
+    fig_tvoc.add_trace(
+        go.Scatter(
+            x=x,
+            y=df['tvoc'],
+            line=dict(color='#FF62DC'),
+            name='tvoc',
+            mode='markers + lines'))
+
+    fig_tvoc.update_layout(
+        width=350,
+        height=120,
+        margin=dict(l=0, r=0, t=10, b=0),
+        xaxis=dict(showgrid=False),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        autosize=True,
+        font=dict(color="#ffffff", size=9, )
+    )
+    #fig_tvoc.update_yaxes(range=[0, 20])
+    plot_fig_tvoc = plot(fig_tvoc, output_type='div')
+
+    # 시간별 그래프
+    df_time = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountHourly')
+
+    df_time['time'] = pd.to_datetime(df_time['time']).dt.hour
+
+    df_time = df_time[(df_time['time'] >= 9) & (df_time['time'] <= 17)]
+
+    y1 = df_time['data'].to_numpy()
+    y1 = y1.tolist()
+    y1.reverse()
+
+    n = 9 - len(y1)
+    for i in range(n):
+        y1.append(0)
+
+    x1 = ['9', '10', '11', '12', '13', '14', '15', '16', '17']
 
     fig_w = go.Figure()
     fig_w.add_trace(
         go.Scatter(
-            x=x,
-            y=y,
+            x=x1,
+            y=y1,
             line=dict(color='#FFAB7C'),
             mode='markers + lines'))
 
@@ -163,105 +195,33 @@ def secon(request):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         autosize=True,
-        font=dict(color="#ffffff", size=9,)
+        font=dict(color="#ffffff", size=9, )
     )
     plot_fig_w = plot(fig_w, output_type='div')
 
 
 
-    # 지역별 지난주 재방문객 -> 대구달성 값으로 완료
-    df = pd.read_csv('./data/DeviceCountRevisit.csv')
-    fig_lastWeek = go.Figure()
-    df = df[df['zone'] != '전체']
-    df['time'] = pd.to_datetime(df['time']).dt.date
-    df['time'] = pd.to_datetime(df['time'], errors='coerce')  # time열을 str 값으로 변환
-    dfw = df[
-        (df['time'] >= startDate) & (df['time'] < endDate)]  # 지난 일주일로만 데이터 프레임 만듦 startDate,endDate는 지난주 재방문객에서 선언함
-    df1 = dfw[dfw['zone'] == 'R&D 연구시설단지']  # 연구시설단지 data 값만 더함
-    sum1 = df1['data'].sum()
-    df2 = dfw[dfw['zone'] == '미래형자동차']  # 미래형자동차 data 값만 더함
-    sum2 = df2['data'].sum()
-    df3 = dfw[dfw['zone'] == '주거단지']  # 주거단지 data 값만 더함
-    sum3 = df3['data'].sum()
-    x = ['R&D 연구시설단지', '미래형자동차', '주거단지']
-    y = [sum1, sum2, sum3]
-    fig_lastWeek.add_trace(
-        go.Bar(
-            y=y,
-            x=x,
-            text=y,
-        )
-    )
-    fig_lastWeek.update_traces(marker_color=['rgba(123,104,238,0.7)', 'rgba(137,176,255,0.7)', 'rgba(164,224,254,0.7)'],
-                               marker_line_color='#ffffff',
-                               marker_line_width=0.7, opacity=1, textposition='inside',
-                               textfont_size=14, textfont_color="#ffffff")
-    fig_lastWeek.update_layout(  # width=500,
-        height=300,
-        xaxis=dict(autorange=True),
-        yaxis=dict(visible=True),
-        margin=dict(l=0, r=0, t=20, b=0),
-        paper_bgcolor="#001B50",
-        plot_bgcolor="rgba(0,0,0,0)",
-        autosize=True,
-        font=dict(color="#ffffff")
-    )
-    plot_lastWeek = plot(fig_lastWeek, output_type='div')
-
     # 환경센서 테이블
 
-    df = pd.read_csv('./data/SensorDataHourlyDay.csv')
-    del df_lastw['Unnamed: 0']
+    df = pd.read_json('http://222.108.138.7:38888/v1/TEST/SensorDataHourly')
     df['time'] = pd.to_datetime(df['time']).dt.date
     df['time'] = pd.to_datetime(df['time'], errors='coerce')
-    df_sensor = df[['zone', 'dust', 'superdust', 'tvoc', 'temp', 'humid']]
-    df_sensor = df_sensor[-5:]  # 최신 환경센서 데이터만 들고옴
-    df_sensor = df_sensor[
-        (df_sensor['zone'] == '주거단지') | (df_sensor['zone'] == '미래형 자동차1') | (df_sensor['zone'] == 'R&D 연구시설단지')]
-    # df_sensor = df_sensor.set_index('zone')
-    # df_sensor = df_sensor.style.hide_index()
-    fig_sensor = go.Figure(data=[go.Table(
-        columnwidth=[550, 300],
-        header=dict(values=['', '<b>미세먼지</b><br>(&#181;g/m&#179;)', '<b>초미세먼지</b><br>(&#181;g/m&#179;)',
-                            '<b>tvoc</b><br>(ppb)', '<b>온도</b><br>(&#8451;)', '<b>습도</b><br>(%)', ],
-                    fill_color='rgba(0,0,0,0)',
-                    line_color='rgba(0,0,0,0)',
-                    align='center',
-                    height=40,
-                    font=dict(color='white', size=15)
-                    ),
-        cells=dict(values=[df_sensor.zone, df_sensor.dust, df_sensor.superdust, df_sensor.tvoc, df_sensor.temp,
-                           df_sensor.humid],
-                   fill_color='rgba(0,0,0,0)',
-                   line_color='rgba(0,0,0,0)',
-                   align='center',
-                   height=40,
-                   font=dict(color='white', size=14)
-                   ))
-    ])
-    fig_sensor.update_layout(height=260,
-                             margin=dict(l=0, r=0, t=0, b=0),
-                             paper_bgcolor="#001B50",
-                             plot_bgcolor="rgba(0,0,0,0)",
-                             autosize=True,
-                             )
-
-    plot_sensor = plot(fig_sensor, output_type='div')
+    df_sensor = df[['temperature', 'humidity', 'pm10', 'pm2_5', 'tvoc']]
 
     # 미세먼지
-    region_dust = df_sensor['dust'].iloc[0]  # 주거단지 미세먼지
+    region_dust = df_sensor['pm10'].iloc[0]  # 주거단지 미세먼지
 
     # 초미세먼지
-    region_superdust = df_sensor['superdust'].iloc[0]  # 주거단지
+    region_superdust = df_sensor['pm2_5'].iloc[0]  # 주거단지
 
     # tvoc
     region_tvoc = df_sensor['tvoc'].iloc[0]  # 주거단지
 
     # temp
-    region_temp = df_sensor['temp'].iloc[0]  # 주거단지
+    region_temp = df_sensor['temperature'].iloc[0]  # 주거단지
 
     # humid
-    region_humid = df_sensor['humid'].iloc[0]  # 주거단지
+    region_humid = df_sensor['humidity'].iloc[0]  # 주거단지
 
 
     # model
@@ -274,20 +234,20 @@ def secon(request):
     weather.save()
 
     # 서버값 불러오기- 회사 데이터 쌓이는 것
-    conn = pymysql.connect(host='172.30.1.220', user='gasi', password='gasi1234!', database='TSG_DB', port=3306,
-                           charset='utf8')
-    sql = 'SELECT * FROM TSG_DB.TSG_TE_DEVICE_SCAN_DATA_WIFI WHERE MAC = 88205820257752 ORDER BY `TIME` DESC '
-    df = pd.read_sql(sql, conn)
+    #conn = pymysql.connect(host='172.30.1.220', user='gasi', password='gasi1234!', database='TSG_DB', port=3306, charset='utf8')
+    #sql = 'SELECT * FROM TSG_DB.TSG_TE_DEVICE_SCAN_DATA_WIFI WHERE MAC = 88205820257752 ORDER BY `TIME` DESC '
+    #df = pd.read_sql(sql, conn)
 
 
-    # 거리별 인원수
-    people = [10, 30, 5] # 인원수 임의의 값 넣어줌
+    # 재방문객 수
+
+    people = [10, 30, 3] # 인원수 임의의 값 넣어줌
     distance = Distance()
     distance.long = people[1]
     distance.middle = people[0]
-    distance.short = people[2]
+    distance.short = currentVisitor #현재 방문객
 
-    # 실시간 방문객 -> 대구달성 값으로 완료
+    # 방문객 혼잡도
     df_visitor = pd.read_csv('./data/DeviceCountHourly.csv')
     current_visitor = df_visitor[df_visitor['zone'] != '전체']
     colors = []
@@ -295,9 +255,9 @@ def secon(request):
         if i < 7:
             colors.append('rgba(137,176,255,0.85)')
         elif i < 20:
-            colors.append('rgba(250,144,144,0.85)')
-        elif i >= 20:
             colors.append('rgba(244,212,132,0.85)')
+        elif i >= 20:
+            colors.append('rgba(250,144,144,0.85)')
 
     fig_pie = go.Figure()
     fig_pie.add_trace(
@@ -313,7 +273,7 @@ def secon(request):
                hole=0.4)
     )
     fig_pie.update_layout(  # width=500,  # 원형그래프가 상자 안에 들어 올 수 있게 크기 조정
-        height=270,
+        height=240,
         annotations=[dict(text='<b>실시간<br>방문객</b>', font_size=11, showarrow=False)],
         margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="rgba(0,0,0,0)",
@@ -325,15 +285,21 @@ def secon(request):
     )
     plot_fig_pie = plot(fig_pie, output_type='div')
 
-    return render(request, "dash/secon.html", context={'plot_div1': plot_div1,
-                                                       'plot_div2': plot_div2,
-                                                       'plot_div3': plot_div3,
-                                                       'plot_div4': plot_div4,
-                                                       'plot_div5': plot_zoneDay,
+    #test = pd.read_json('http://172.30.1.220:8000/v1/TEST/DeviceCountDay')
+    #a = test['data']
+
+
+
+    return render(request, "dash/secon.html", context={'currentVisitor': currentVisitor,
+                                                       'allVisitor': allVisitor,
+                                                       'periodVisitor': periodVisitor,
+                                                       'dataTodayAll': dataTodayAll,
+                                                       'plot_todayVisitor': plot_todayVisitor,
                                                        'plot_div6': plot_fig_w,
+                                                       'plot_t': plot_fig_t,
+                                                       'plot_d': plot_fig_d,
+                                                       'plot_tvoc': plot_fig_tvoc,
                                                        'plot_pie': plot_fig_pie,
-                                                       'plot_div8': plot_lastWeek,
-                                                       'plot_sensor': plot_sensor,
                                                        'region_dust': region_dust,
                                                        'region_superdust': region_superdust,
                                                        'region_tvoc': region_tvoc,

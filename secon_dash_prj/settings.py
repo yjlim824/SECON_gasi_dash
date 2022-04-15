@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ['*'] #모든 호스트 연결 허용
 # Application definition
 
 INSTALLED_APPS = [
+    'django_apscheduler',
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,3 +131,11 @@ STATICFILES_DIRS = [ # static dir 기본 설정
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#crontab
+
+CRONJOBS = [
+    ('*****', '../dash.views.secon_views.secon')
+]
+
+APSCHEDULER_DATETIME_FORMAT =  "N j, Y, f:s a"  # Default

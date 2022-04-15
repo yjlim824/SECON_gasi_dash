@@ -20,3 +20,9 @@ tenacity==8.0.1
 urllib3==1.26.7
 PyMySQL==1.0.2
 opencv-python==4.5.5.64
+django-crontab==0.7.1
+apscheduler==3.9.1 
+django-apscheduler==0.6.2 
+pytz-deprecation-shim==0.1.0.post0 
+tzdata==2022.1 
+tzlocal==4.2

@@ -6,17 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="382640d9-3cdf-47b4-8fef-bbed62fa3c55" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash/templates/dash/secon.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash/templates/dash/secon.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash/views/secon_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash/views/secon_views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/secon_dash_prj/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/secon_dash_prj/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/big_blue.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/big_red.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/big_yellow.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/middle_blue.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/middle_red.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/middle_yellow.svg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

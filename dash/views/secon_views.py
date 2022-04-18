@@ -27,19 +27,29 @@ def secon(request):
     dataTodayAll = data
 
     # 총 누적 방문객 -> 확인해보기
-    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountDay?from=2022-04-11&to=2022-04-16')
-    data = df['data'].sum() + dataTodayAll
-    allVisitor = data
+    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountDay?from=2022-04-20&to=2022-04-22')
+    if df.empty:
+        data = 0
+    else:
+        data = df['data'].sum()
+
+    allVisitor = data + dataTodayAll
 
     # 일별 방문객
-    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountDay?from=2022-04-14&to=2022-04-18')
+    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountDay?from=2022-04-20&to=2022-04-22')
 
     todayVisitor = go.Figure()
-    df['time'] = pd.to_datetime(df['time']).dt.date
-    df['time'] = pd.to_datetime(df['time'], errors='coerce')
-    df = df[(df['time'] >= '2022-04-14') & (df['time'] <= '2022-04-18')]
-    x = df['data'].to_numpy()
-    x = x.tolist()
+
+    if df.empty:
+        x = []
+        x.append(dataTodayAll)
+    else:
+        df['time'] = pd.to_datetime(df['time']).dt.date
+        df['time'] = pd.to_datetime(df['time'], errors='coerce')
+        df = df[(df['time'] >= '2022-04-20') & (df['time'] <= '2022-04-22')]
+        x = df['data'].to_numpy()
+        x = x.tolist()
+        x.append(dataTodayAll)
 
 
     n = 3 - len(x)
@@ -47,7 +57,7 @@ def secon(request):
     for i in range(n):
         x.append(0)
 
-    y = ['4-14', '4-15', '4-16']
+    y = ['4-20', '4-21', '4-22']
     todayVisitor.add_trace(
         go.Bar(
             y=y,
@@ -73,6 +83,45 @@ def secon(request):
         font=dict(color="#ffffff", size=9, )  # 그래프 폰트 색상 변경
     )
     plot_todayVisitor = plot(todayVisitor, output_type='div')
+
+
+    # 시간별 그래프
+    df_time = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountHourly')
+
+    df_time['time'] = pd.to_datetime(df_time['time']).dt.hour
+
+    df_time = df_time[(df_time['time'] >= 8) & (df_time['time'] <= 17)]
+
+    y1 = df_time['data'].to_numpy()
+    y1 = y1.tolist()
+    y1.reverse()
+
+    n = 9 - len(y1)
+    for i in range(n):
+        y1.append(0)
+
+    x1 = ['9', '10', '11', '12', '13', '14', '15', '16', '17']
+
+    fig_w = go.Figure()
+    fig_w.add_trace(
+        go.Scatter(
+            x=x1,
+            y=y1,
+            line=dict(color='#FFAB7C'),
+            mode='markers + lines'))
+
+    fig_w.update_layout(
+        width=180,
+        height=120,
+        margin=dict(l=0, r=0, t=20, b=0),
+        xaxis=dict(showgrid=False),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        autosize=True,
+        font=dict(color="#ffffff", size=9, )
+    )
+    fig_w.update_yaxes(range=[0, 50])
+    plot_fig_w = plot(fig_w, output_type='div')
 
     # 대기 그래프
     df = pd.read_json('http://15.164.94.113:8000/v1/Gasi/SensorDataDayAverage')
@@ -136,7 +185,7 @@ def secon(request):
         autosize=True,
         font=dict(color="#ffffff", size=9, )
     )
-    fig_d.update_yaxes(range=[0, 20])
+    #fig_d.update_yaxes(range=[0, 50])
     plot_fig_d = plot(fig_d, output_type='div')
 
     # tvoc
@@ -161,43 +210,6 @@ def secon(request):
     )
     #fig_tvoc.update_yaxes(range=[0, 20])
     plot_fig_tvoc = plot(fig_tvoc, output_type='div')
-
-    # 시간별 그래프
-    df_time = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountHourly')
-
-    df_time['time'] = pd.to_datetime(df_time['time']).dt.hour
-
-    df_time = df_time[(df_time['time'] >= 9) & (df_time['time'] <= 17)]
-
-    y1 = df_time['data'].to_numpy()
-    y1 = y1.tolist()
-    y1.reverse()
-
-    n = 9 - len(y1)
-    for i in range(n):
-        y1.append(0)
-
-    x1 = ['9', '10', '11', '12', '13', '14', '15', '16', '17']
-
-    fig_w = go.Figure()
-    fig_w.add_trace(
-        go.Scatter(
-            x=x1,
-            y=y1,
-            line=dict(color='#FFAB7C'),
-            mode='markers + lines'))
-
-    fig_w.update_layout(
-        width=180,
-        height=120,
-        margin=dict(l=0, r=0, t=20, b=0),
-        xaxis=dict(showgrid=False),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        autosize=True,
-        font=dict(color="#ffffff", size=9, )
-    )
-    plot_fig_w = plot(fig_w, output_type='div')
 
 
 
@@ -245,7 +257,7 @@ def secon(request):
     distance = Distance()
     distance.long = people[1]
     distance.middle = people[0]
-    distance.short = currentVisitor #현재 방문객
+    distance.short = currentVisitor #현재 방문객 이것만 사용
 
     # 방문객 혼잡도
     df_visitor = pd.read_csv('./data/DeviceCountHourly.csv')

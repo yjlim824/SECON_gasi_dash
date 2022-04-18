@@ -124,9 +124,12 @@ def secon(request):
     plot_fig_w = plot(fig_w, output_type='div')
 
     # 대기 그래프
-    df = pd.read_json('http://15.164.94.113:8000/v1/Gasi/SensorDataDayAverage')
-    df['time'] = pd.to_datetime(df['time']).dt.hour
-    df = df[(df['time'] >= 9) & (df['time'] <= 17)]
+    df = pd.read_json('http://15.164.94.113:8000/v1/Gasi/SensorDataDayAverage?from=2022-4-17&to=2022-4-22')
+    df['hour'] = pd.to_datetime(df['time']).dt.hour
+    df['day'] = pd.to_datetime(df['time']).dt.day
+    now = datetime.today().day
+    df = df[df['day'] == now]
+    df = df[(df['hour'] >= 7) & (df['hour'] <= 17)]
     y = df['temperature']
     x = df['time']
     fig_t = go.Figure()

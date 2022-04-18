@@ -15,15 +15,15 @@ def secon(request):
     currentVisitor = data
 
     # 체류 시간
-    df = pd.read_json('http://222.108.138.7:38888/v1/TEST/DeviceResidenceTime')
+    df = pd.read_json('http://15.164.94.113:8000/v1/Gasi/DeviceResidenceTime')
     data = df['data'].iloc[0]
     data = data // 100
     periodVisitor = data
 
 
-    # 오늘 총 방문객
-    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountHourly')
-    data = df['data'].sum()
+    # 오늘 방문객
+    df = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCount1d-1h')
+    data = df['data'].iloc[0]
     dataTodayAll = data
 
     # 총 누적 방문객 -> 확인해보기
@@ -82,16 +82,21 @@ def secon(request):
         autosize=True,
         font=dict(color="#ffffff", size=9, )  # 그래프 폰트 색상 변경
     )
+    #todayVisitor.update_yaxes(range=[0,100])
     plot_todayVisitor = plot(todayVisitor, output_type='div')
 
 
     # 시간별 그래프
     df_time = pd.read_json('http://222.108.138.7:38888/v1/SECON/DeviceCountHourly')
 
-    df_time['time'] = pd.to_datetime(df_time['time']).dt.hour
+    df_time['time'] = pd.to_datetime(df_time['time']).dt.hour # 날짜 프레임 데이터를 시간 데이터로(int)
 
     df_time = df_time[(df_time['time'] >= 8) & (df_time['time'] <= 17)]
 
+    y1 = df_time['data']
+    x1 = df_time['time']
+
+    '''
     y1 = df_time['data'].to_numpy()
     y1 = y1.tolist()
     y1.reverse()
@@ -101,6 +106,8 @@ def secon(request):
         y1.append(0)
 
     x1 = ['9', '10', '11', '12', '13', '14', '15', '16', '17']
+    
+    '''
 
     fig_w = go.Figure()
     fig_w.add_trace(
@@ -158,7 +165,7 @@ def secon(request):
         autosize=True,
         font=dict(color="#ffffff", size=9,)
     )
-    fig_t.update_yaxes(range=[10, 30])
+    fig_t.update_yaxes(range=[15, 35])
     plot_fig_t = plot(fig_t, output_type='div')
 
     #미세먼지 초미세먼지
